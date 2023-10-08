@@ -6,6 +6,8 @@ from discord.ext import commands
 import json
 
 import random
+import os
+import asyncio
 
 with open('setting.json','r',encoding="utf-8")as jfile:
     jdata = json.load(jfile)
@@ -37,27 +39,41 @@ async def on_member_remove(member):
     
     await channel.send(f'{member}已離開')
 
-@bot.command()
-#command 中的def幾乎都為prefix後接的指令
-
-# 在ping()中的變數為ctx，ctx全名為context(上下文)，上文為開頭，下文為回覆
-# 而在ctx中上文已經有包含所在伺服器 使用者等等資訊
-
-
-async def ping(ctx):
-    await ctx.send(f'{round(bot.latency*1000)}(ms)')
 
 @bot.command()
-async def pic(ctx):
-    random_pic = random.choice(jdata["picture"])
-    picdata = discord.File(random_pic)
+async def load(ctx,extension):
+    await bot.load_extension(f"cmds.{extension}")
+    await ctx.send(f"loaded {extension} done")
+
+@bot.command()
+async def unload(ctx,extension):
+    await bot.unload_extension(f"cmds.{extension}")
+    await ctx.send(f"unloaded {extension} done")
+
+@bot.command()
+async def reload(ctx,extension):
+    await bot.reload_extension(f"cmds.{extension}")
+    await ctx.send(f"reloaded {extension} done")
+
+
+
+
+async def loadfile():
+    for filename in os.listdir("./cmds"):
+        if filename.endswith('.py'):
+            await bot.load_extension(f'cmds.{filename[:-3]}')
+
+   
+#啟動函式
+if __name__=="__main__":
+    asyncio.run(loadfile())
+
+
+
+
+
     
-    await ctx.send(file= picdata)
-    
 
-
-
-
-
-bot.run(jdata["TOKEN"])
+if __name__ == "__main__":
+    bot.run(jdata["TOKEN"])
 
