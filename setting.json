@@ -1,8 +1,10 @@
 {
-    "TOKEN": "MTE1MzMyNDY0NTE2MDg1NzYzMQ.G8VV9k.CYhy7ourlPkx9HV6XAN7gQlBAMoaHda0WXsfi0",
+    "TOKEN": "MTE1MzMyNDY0NTE2MDg1NzYzMQ.GkVDhr.1OZwV50HGRtiz8Lne-hwOyEK-nZsU1VRyfRZfE",
     "join_channel": "1155002167258796172",
     "leave_channel": "1155002864356294687",
-    "picture": ["//mnt//d//desu_bot//soso.jpg","//mnt//d//desu_bot//suck.jpg"]
+    "picture": ["//mnt//d//desu_bot//soso.jpg","//mnt//d//desu_bot//suck.jpg"],
+    "keyword1": ["apple","pineapple"],
+    "keyword2":["tomato","fish"]
     
 }
 

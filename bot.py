@@ -1,13 +1,16 @@
 #!/usr/bin/python3
 import discord
 
-from discord.ext import commands
+from discord.ext import commands,tasks
 
 import json
 
 import random
 import os
 import asyncio
+
+
+
 
 with open('setting.json','r',encoding="utf-8")as jfile:
     jdata = json.load(jfile)
@@ -23,21 +26,10 @@ bot = commands.Bot(command_prefix='%', intents = intents)
 #on_ready()為discord.py內部已經定義的函式
 async def on_ready():
     print("bot is working")
-
-@bot.event
-#on_member_join為discord.py內部已經定義的函式
-#而括號內的變數內部也已經定義為member不得修改。而且member只能一個
-async def on_member_join(member):
-    channel = bot.get_channel(int(jdata["join_channel"]))
-   
-    await channel.send(f'{member}已加入')
-
-@bot.event 
-#on_member_remove為discord.py內部已經定義的函式，而member定義同join
-async def on_member_remove(member):
-    channel = bot.get_channel(int(jdata["leave_channel"]))
     
-    await channel.send(f'{member}已離開')
+    
+
+
 
 
 @bot.command()
@@ -58,15 +50,29 @@ async def reload(ctx,extension):
 
 
 
-async def loadfile():
+
+
+
+
+async def load_extensions():
     for filename in os.listdir("./cmds"):
         if filename.endswith('.py'):
             await bot.load_extension(f'cmds.{filename[:-3]}')
+            print(f'cmd.loaded {filename} done')
+    
+
 
    
-#啟動函式
-if __name__=="__main__":
-    asyncio.run(loadfile())
+async def nain():
+    async with bot:
+        await load_extensions()
+        await bot.start(jdata["TOKEN"])
+
+# 確定執行此py檔才會執行
+if __name__ == "__main__":
+    asyncio.run(nain())
+
+    
 
 
 
@@ -74,6 +80,5 @@ if __name__=="__main__":
 
     
 
-if __name__ == "__main__":
-    bot.run(jdata["TOKEN"])
+   
 
